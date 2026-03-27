@@ -12,6 +12,9 @@
     <a href="/logout" class="logout-btn">← Geri Dön</a>
 
     <h1>Admin Dashboard</h1>
+    <p style="margin-top:10px; font-weight:bold;">
+        Hoş geldin, {{ user }}
+    </p>
 
     <div class="cards">
         <div class="card">
@@ -44,6 +47,34 @@
             <p>%{{ failed_login_rate }}</p>
         </div>
     </div>
+
+    <!-- LOG TABLOSU -->
+    <h2 style="margin-top:40px;">Login Logları</h2>
+
+    <table style="width:100%; margin-top:15px; border-collapse: collapse;">
+        <tr style="background:#eee;">
+            <th>Kullanıcı</th>
+            <th>Durum</th>
+            <th>Zaman</th>
+        </tr>
+
+        {% for log in failed_logins %}
+        <tr style="color:red;">
+            <td>{{ log.username }}</td>
+            <td>Hatalı</td>
+            <td>{{ log.time }}</td>
+        </tr>
+        {% endfor %}
+
+        {% for log in successful_logins %}
+        <tr style="color:green;">
+            <td>{{ log.username }}</td>
+            <td>Başarılı</td>
+            <td>{{ log.time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
 </div>
 
 </body>
