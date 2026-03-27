@@ -8,27 +8,40 @@
 <body>
 
 <div class="dashboard">
+
+    <a href="/logout" class="logout-btn">← Geri Dön</a>
+
     <h1>Admin Dashboard</h1>
 
     <div class="cards">
         <div class="card">
             <h3>Total Logs</h3>
-            <p>0</p>
+            <p>{{ total_logs }}</p>
         </div>
 
-        <div class="card">
+        <div class="card error">
             <h3>Error Logs</h3>
-            <p>0</p>
+            <p>{{ error_logs }}</p>
         </div>
 
-        <div class="card">
+        <div class="card warning">
             <h3>Warning Logs</h3>
-            <p>0</p>
+            <p>{{ warning_logs }}</p>
         </div>
 
         <div class="card">
             <h3>CPU Usage</h3>
             <p>%0</p>
+        </div>
+
+        <div class="card warning">
+            <h3>Failed Login Count</h3>
+            <p>{{ failed_login_count }}</p>
+        </div>
+
+        <div class="card warning">
+            <h3>Failed Login Rate</h3>
+            <p>%{{ failed_login_rate }}</p>
         </div>
     </div>
 </div>
