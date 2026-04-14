@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Log CPU</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                <h2 class="section-title">Sistem Log CPU</h2>
+
+                <div class="cards">
+                    <div class="card">
+                        <h3>Total Logs</h3>
+                        <p id="total-logs">{{ total_logs }}</p>
+                    </div>
+
+                    <div class="card error">
+                        <h3>Error Logs</h3>
+                        <p id="error-logs">{{ error_logs }}</p>
+                    </div>
+
+                    <div class="card warning">
+                        <h3>Warning Logs</h3>
+                        <p id="warning-logs">{{ warning_logs }}</p>
+                    </div>
+
+                    <div id="cpu-card" class="card {{ cpu_class }}">
+                        <h3>CPU Usage</h3>
+                        <p id="cpu-usage">%{{ cpu_usage }}</p>
+                    </div>
+
+                    <div id="memory-card" class="card {{ memory_class }}">
+                        <h3>Memory Usage</h3>
+                        <p id="memory-usage">%{{ memory_usage }}</p>
+                    </div>
+                </div>
+
+                <h3 class="sub-title">En Çok Kaynak Kullanan Uygulamalar</h3>
+
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Uygulama</th>
+                            <th>CPU (%)</th>
+                            <th>Memory (MB)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="process-body">
+                        {% for proc in top_processes %}
+                        <tr>
+                            <td>{{ proc.name }}</td>
+                            <td>{{ proc.cpu }}</td>
+                            <td>{{ proc.memory }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/system_logs.js') }}"></script>
+
+</body>
+</html>

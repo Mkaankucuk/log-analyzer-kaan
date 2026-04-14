@@ -1,0 +1,40 @@
+<div class="sidebar">
+    <div>
+        <div class="sidebar-header">
+            <h2>Log Analyzer</h2>
+            <p>Hoş geldin, {{ user }}</p>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="{{ url_for('main.system_logs') }}"
+               class="sidebar-item {% if active_page == 'system' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>Sistem Log CPU</strong>
+                    <small>Sistem metrikleri</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('main.access_logs') }}"
+               class="sidebar-item {% if active_page == 'access' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>Access Logs</strong>
+                    <small>İstek & grafik analizi</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('main.trend_logs') }}"
+               class="sidebar-item {% if active_page == 'trend' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>Trend Logs</strong>
+                    <small>Login analizleri</small>
+                </div>
+            </a>
+        </nav>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="{{ url_for('main.logout') }}" class="sidebar-logout">
+            Çıkış Yap
+        </a>
+    </div>
+</div>
