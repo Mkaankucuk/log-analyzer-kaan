@@ -1,5 +1,4 @@
 import pandas as pd
-
 from app.repositories.log_repository import fetch_request_logs
 
 
@@ -8,6 +7,7 @@ def load_request_logs():
         df = fetch_request_logs()
 
         if df.empty:
+            print("Dataframe boş geldi.")
             return pd.DataFrame()
 
         if "metod" in df.columns:
@@ -16,11 +16,16 @@ def load_request_logs():
         required_cols = ["Timestamp", "latency", "status", "method", "endpoint"]
         for col in required_cols:
             if col not in df.columns:
+                print(f"Eksik kolon: {col}")
+                print("Mevcut kolonlar:", df.columns.tolist())
                 return pd.DataFrame()
 
-        df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce")
-        df["status"] = pd.to_numeric(df["status"], errors="coerce")
+        df["Timestamp"] = pd.to_numeric(df["Timestamp"], errors="coerce")
         df["latency"] = pd.to_numeric(df["latency"], errors="coerce")
+        df["status"] = pd.to_numeric(df["status"], errors="coerce")
+
+        # KRİTİK SATIR
+        df["Timestamp"] = pd.to_datetime(df["Timestamp"], unit="s", errors="coerce")
 
         df["method"] = df["method"].astype(str).str.strip().str.upper()
         df["endpoint"] = df["endpoint"].astype(str).str.strip()
@@ -30,9 +35,13 @@ def load_request_logs():
         df = df[df["endpoint"] != ""]
         df = df[df["endpoint"].str.lower() != "nan"]
 
+        print("Temizlenmiş dataframe boyutu:", df.shape)
+        print(df.head())
+
         return df
 
-    except Exception:
+    except Exception as e:
+        print("load_request_logs hatası:", e)
         return pd.DataFrame()
 
 
