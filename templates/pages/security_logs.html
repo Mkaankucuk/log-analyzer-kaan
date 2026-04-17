@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+
+            <section class="section-box">
+                <h1 class="section-title">Security Logs</h1>
+
+                <div class="cards">
+                    <div class="card">
+                        <h3>Total Security Logs</h3>
+                        <p>{{ summary.total_logs }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-box">
+                <h2 class="sub-title">Status Code Dağılımı</h2>
+                <div class="chart-container">
+                    <div id="statusChart"></div>
+                </div>
+            </section>
+
+            <section class="section-box">
+                <h2 class="sub-title">Error Type Dağılımı</h2>
+                <div class="chart-container">
+                    <div id="errorTypeChart"></div>
+                </div>
+            </section>
+
+            <section class="section-box">
+                <h2 class="sub-title">Latency Trend</h2>
+
+                <div class="chart-container">
+                    <div id="latencyChart"></div>
+                </div>
+
+                <div class="latency-filter-box">
+                    <div class="filter-group">
+                        <label for="latencyInterval">Zaman Kırılımı</label>
+                        <select id="latencyInterval">
+                            <option value="hour" {% if selected_interval == 'hour' %}selected{% endif %}>Saatlik</option>
+                            <option value="day" {% if selected_interval == 'day' %}selected{% endif %}>Günlük</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button id="applySecurityFilter" type="button">Filtrele</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    window.securityChartData = {
+        statusChart: {{ status_chart | safe }},
+        errorTypeChart: {{ error_type_chart | safe }},
+        latencyChart: {{ latency_chart | safe }}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/security_logs.js') }}"></script>
+
+</body>
+</html>

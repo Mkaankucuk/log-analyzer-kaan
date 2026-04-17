@@ -7,7 +7,6 @@ def load_request_logs():
         df = fetch_request_logs()
 
         if df.empty:
-            print("Dataframe boş geldi.")
             return pd.DataFrame()
 
         if "metod" in df.columns:
@@ -21,10 +20,9 @@ def load_request_logs():
                 return pd.DataFrame()
 
         df["Timestamp"] = pd.to_numeric(df["Timestamp"], errors="coerce")
-        df["latency"] = pd.to_numeric(df["latency"], errors="coerce")
         df["status"] = pd.to_numeric(df["status"], errors="coerce")
+        df["latency"] = pd.to_numeric(df["latency"], errors="coerce")
 
-        # KRİTİK SATIR
         df["Timestamp"] = pd.to_datetime(df["Timestamp"], unit="s", errors="coerce")
 
         df["method"] = df["method"].astype(str).str.strip().str.upper()
@@ -34,9 +32,6 @@ def load_request_logs():
         df = df[df["method"] != ""]
         df = df[df["endpoint"] != ""]
         df = df[df["endpoint"].str.lower() != "nan"]
-
-        print("Temizlenmiş dataframe boyutu:", df.shape)
-        print(df.head())
 
         return df
 
@@ -72,8 +67,15 @@ def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=N
     if df.empty:
         return {
             "method_chart_data": {},
-            "request_error_chart": {"x": [], "total_requests": [], "error_count": []},
-            "latency_chart": {"x": [], "avg_latency": []}
+            "request_error_chart": {
+                "x": [],
+                "total_requests": [],
+                "error_count": []
+            },
+            "latency_chart": {
+                "x": [],
+                "avg_latency": []
+            }
         }
 
     if methods:
@@ -96,8 +98,15 @@ def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=N
     if df.empty:
         return {
             "method_chart_data": {},
-            "request_error_chart": {"x": [], "total_requests": [], "error_count": []},
-            "latency_chart": {"x": [], "avg_latency": []}
+            "request_error_chart": {
+                "x": [],
+                "total_requests": [],
+                "error_count": []
+            },
+            "latency_chart": {
+                "x": [],
+                "avg_latency": []
+            }
         }
 
     if interval == "day":

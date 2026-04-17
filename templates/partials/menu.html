@@ -29,6 +29,14 @@
                     <small>Login analizleri</small>
                 </div>
             </a>
+
+            <a href="{{ url_for('security.security_logs') }}"
+               class="sidebar-item {% if active_page == 'security' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>Security Logs</strong>
+                    <small>Hata ve güvenlik analizi</small>
+                </div>
+            </a>
         </nav>
     </div>
 

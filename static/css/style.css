@@ -484,3 +484,39 @@ body {
         padding: 20px;
     }
 }
+.latency-filter-box {
+    margin-top: 20px;
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.filter-group select {
+    padding: 10px 12px;
+    border: 1px solid #cfd8e3;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fff;
+}
+
+.filter-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #163b65;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
