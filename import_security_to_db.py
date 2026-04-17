@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
-CSV_PATH = BASE_DIR / "data" / "afid_dataset.csv"
+CSV_PATH = BASE_DIR / "data" / "afid_dataset_modified.csv"
 DB_PATH = BASE_DIR / "logs.db"
 TABLE_NAME = "security_logs"
 

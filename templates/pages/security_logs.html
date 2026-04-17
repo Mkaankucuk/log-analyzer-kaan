@@ -41,8 +41,23 @@
 
             <section class="section-box">
                 <h2 class="sub-title">Latency Trend</h2>
+
                 <div class="chart-container">
                     <div id="latencyChart"></div>
+                </div>
+
+                <div class="latency-filter-box">
+                    <div class="filter-group">
+                        <label for="latencyInterval">Zaman Kırılımı</label>
+                        <select id="latencyInterval">
+                            <option value="hour" {% if selected_interval == 'hour' %}selected{% endif %}>Saatlik</option>
+                            <option value="day" {% if selected_interval == 'day' %}selected{% endif %}>Günlük</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button id="applySecurityFilter" type="button">Filtrele</button>
+                    </div>
                 </div>
             </section>
 
