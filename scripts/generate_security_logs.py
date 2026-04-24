@@ -4,30 +4,50 @@ import pandas as pd
 import random
 from datetime import datetime, timedelta
 
+
 fake = Faker()
 
 APIS = ["user-api", "payment-api", "order-api", "auth-api", "inventory-api"]
 TEAMS = ["team-alpha", "team-beta", "team-gamma", "team-delta"]
-ENVS = ["dev", "staging", "prod"]
-METHODS = ["GET", "POST", "PUT", "DELETE"]
-ERROR_TYPES = ["ClientError", "ServerError", "Timeout", "AuthError", "RateLimit"]
+ENVS = ["dev", "staging", "prod", "qa"]
+METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"]
 
+ERROR_TYPES = ["ClientError", "ServerError", "Timeout", "AuthError", "RateLimit"]
 ERROR_WEIGHTS = [0.40, 0.25, 0.15, 0.10, 0.10]
 
 STATUS_MAP = {
     "ClientError": [400, 401, 403, 404],
     "ServerError": [500, 502, 503],
     "Timeout": [504],
-    "AuthError": [401],
+    "AuthError": [401, 403],
     "RateLimit": [429]
 }
 
 ROOT_CAUSES = {
-    "ClientError": ["Invalid request", "Missing parameter", "Schema validation error"],
-    "ServerError": ["Database failure", "Null pointer exception", "Internal service crash"],
-    "Timeout": ["Slow network", "Upstream timeout", "Gateway timeout"],
-    "AuthError": ["Expired token", "Invalid token", "Missing authorization scope"],
-    "RateLimit": ["Too many requests", "Burst traffic detected"]
+    "ClientError": [
+        "Invalid request",
+        "Missing parameter",
+        "Schema validation error"
+    ],
+    "ServerError": [
+        "Database connection failure",
+        "Internal service crash",
+        "Memory exhaustion"
+    ],
+    "Timeout": [
+        "High latency in network",
+        "Upstream timeout",
+        "Gateway timeout"
+    ],
+    "AuthError": [
+        "Expired token",
+        "Invalid token",
+        "Missing authorization scope"
+    ],
+    "RateLimit": [
+        "Too many requests",
+        "Burst traffic detected"
+    ]
 }
 
 
@@ -40,7 +60,13 @@ def generate_security_logs(row_count=50000):
 
         error_type = random.choices(ERROR_TYPES, weights=ERROR_WEIGHTS)[0]
         status_code = random.choice(STATUS_MAP[error_type])
+
         latency = random.randint(100, 8000)
+
+        if 20000 < i < 23000:
+            error_type = "ServerError"
+            status_code = 500
+            latency = random.randint(6000, 15000)
 
         rows.append({
             "timestamp": timestamp,
@@ -58,7 +84,7 @@ def generate_security_logs(row_count=50000):
     return pd.DataFrame(rows)
 
 
-def save_security_logs(df: pd.DataFrame):
+def save_security_logs(df):
     base_dir = Path(__file__).resolve().parent.parent
     data_dir = base_dir / "data"
     data_dir.mkdir(exist_ok=True)
@@ -66,7 +92,7 @@ def save_security_logs(df: pd.DataFrame):
     output_path = data_dir / "fake_security_logs.csv"
     df.to_csv(output_path, index=False)
 
-    print(f"Fake security log üretildi: {output_path}")
+    print(f"Fake security logs oluşturuldu: {output_path}")
 
 
 if __name__ == "__main__":

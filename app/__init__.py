@@ -11,11 +11,18 @@ def create_app():
 
     app.config.from_object(Config)
 
-
-    from app.api.routes.dashboard import main
+    from app.api.routes.auth import auth_bp
+    from app.api.routes.system import system_bp
+    from app.api.routes.access import access_bp
+    from app.api.routes.trend import trend_bp
+    from app.api.routes.metrics import metrics_bp
     from app.api.routes.security import security_bp
 
-    app.register_blueprint(main)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(system_bp)
+    app.register_blueprint(access_bp)
+    app.register_blueprint(trend_bp)
+    app.register_blueprint(metrics_bp)
     app.register_blueprint(security_bp)
 
     return app
