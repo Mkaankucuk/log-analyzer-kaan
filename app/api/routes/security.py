@@ -8,7 +8,7 @@ security_bp = Blueprint("security", __name__)
 @security_bp.route("/dashboard/security-logs")
 def security_logs():
     if "user" not in session:
-        return redirect(url_for("main.home"))
+        return redirect(url_for("auth.home"))
 
     interval = request.args.get("interval", "hour")
 

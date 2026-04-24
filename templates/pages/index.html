@@ -16,7 +16,7 @@
             <p class="login-error">{{ error }}</p>
         {% endif %}
 
-        <form method="POST" action="{{ url_for('main.login') }}">
+        <form method="POST" action="{{ url_for('auth.login') }}">
 
             <div class="form-group">
                 <input type="text" name="username" placeholder="Kullanıcı adı" required>
