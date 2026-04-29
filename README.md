@@ -1,15 +1,15 @@
 # Log Analyzer Kaan
 
 log izleme ve analiz uygulaması  
-Dashboard uzerinden sistem, access, trend ve security loglarini takip edebilirsiniz.
+Dashboard uzerinden sistem, access, trend ve security loglarını görebilirsiniz
 
 ## Ozellikler
 
-- **System Logs**: toplam/error/warning log kartlari, CPU ve memory kullanimi, en cok kaynak tuketen surecler
-- **Access Logs**: method, status grubu/kodu, endpoint ve zaman kirilimi filtreleri ile grafikler
-- **Trend Logs**: basarisiz giris sayisi, basarisiz giris orani ve login gecmisi
-- **Security Logs**: status code dagilimi, error type dagilimi, latency trend
-- **Localization (TR/EN)**: arayuz metinleri ve grafik basliklari Turkce/English degistirilebilir
+- **System Logs**: toplam/error/warning log kartları, CPU ve memory kullanımı, en çok kaynak tüketen süreçler
+- **Access Logs**: method, status grubu/kodu, endpoint ve zaman kırılımı filtreleri ile grafikler
+- **Trend Logs**: başarısız giriş sayısı, basarısız giris orani ve login geçmişi
+- **Security Logs**: status code dağılımı, error type dağılımı, latency trend
+- **Localization (TR/EN)**: arayüz metinleri ve grafik başlıkları Türkçe/English değeiştirilebilir
 
 ## Proje Yapisi 
 
@@ -22,7 +22,7 @@ Dashboard uzerinden sistem, access, trend ve security loglarini takip edebilirsi
 
 
 
-Proje klasorunde asagidaki adimlari izleyin:
+Proje klasorunde asagidaki adimlari izleyebilirisiniz:
 
 ```bash
 python setup_project.py
