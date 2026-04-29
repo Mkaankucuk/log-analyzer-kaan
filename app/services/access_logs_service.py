@@ -1,8 +1,51 @@
+from pathlib import Path
+import time
 import pandas as pd
+from flask import current_app
+
 from app.repositories.log_repository import fetch_request_logs
 
 
-def load_request_logs():
+_CACHE_TTL_SECONDS = 300
+_REQUIRED_COLUMNS = ["Timestamp", "latency", "status", "method", "endpoint"]
+_cached_df = pd.DataFrame()
+_cache_timestamp = 0.0
+_cache_db_mtime = None
+_cached_filter_options = {
+    "methods": [],
+    "endpoints": [],
+    "status_codes": []
+}
+
+
+def _empty_chart_data():
+    return {
+        "method_chart_data": {},
+        "request_error_chart": {
+            "x": [],
+            "total_requests": [],
+            "error_count": []
+        },
+        "latency_chart": {
+            "x": [],
+            "avg_latency": []
+        }
+    }
+
+
+def _read_db_mtime():
+    db_path = current_app.config.get("DB_PATH")
+    if not db_path:
+        return None
+
+    path = Path(db_path)
+    if not path.exists():
+        return None
+
+    return path.stat().st_mtime
+
+
+def _prepare_request_logs():
     try:
         df = fetch_request_logs()
 
@@ -12,8 +55,7 @@ def load_request_logs():
         if "metod" in df.columns:
             df.rename(columns={"metod": "method"}, inplace=True)
 
-        required_cols = ["Timestamp", "latency", "status", "method", "endpoint"]
-        for col in required_cols:
+        for col in _REQUIRED_COLUMNS:
             if col not in df.columns:
                 print(f"Eksik kolon: {col}")
                 print("Mevcut kolonlar:", df.columns.tolist())
@@ -40,43 +82,53 @@ def load_request_logs():
         return pd.DataFrame()
 
 
-def get_access_filter_options():
-    df = load_request_logs()
+def load_request_logs():
+    global _cached_df
+    global _cache_timestamp
+    global _cache_db_mtime
 
+    current_time = time.time()
+    db_mtime = _read_db_mtime()
+    is_cache_fresh = (current_time - _cache_timestamp) < _CACHE_TTL_SECONDS
+    is_same_db = db_mtime == _cache_db_mtime
+
+    if not _cached_df.empty and is_cache_fresh and is_same_db:
+        return _cached_df
+
+    _cached_df = _prepare_request_logs()
+    _cache_timestamp = current_time
+    _cache_db_mtime = db_mtime
+    _refresh_filter_options_cache(_cached_df)
+    return _cached_df
+
+
+def _refresh_filter_options_cache(df):
+    global _cached_filter_options
     if df.empty:
-        return {
+        _cached_filter_options = {
             "methods": [],
             "endpoints": [],
             "status_codes": []
         }
+        return
 
-    methods = sorted(df["method"].dropna().unique().tolist())
-    endpoints = sorted(df["endpoint"].dropna().unique().tolist())
-    status_codes = sorted(df["status"].dropna().astype(int).unique().tolist())
-
-    return {
-        "methods": methods,
-        "endpoints": endpoints,
-        "status_codes": status_codes
+    _cached_filter_options = {
+        "methods": sorted(df["method"].dropna().unique().tolist()),
+        "endpoints": sorted(df["endpoint"].dropna().unique().tolist()),
+        "status_codes": sorted(df["status"].dropna().astype(int).unique().tolist())
     }
+
+
+def get_access_filter_options():
+    load_request_logs()
+    return _cached_filter_options
 
 
 def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=None, interval="hour"):
     df = load_request_logs()
 
     if df.empty:
-        return {
-            "method_chart_data": {},
-            "request_error_chart": {
-                "x": [],
-                "total_requests": [],
-                "error_count": []
-            },
-            "latency_chart": {
-                "x": [],
-                "avg_latency": []
-            }
-        }
+        return _empty_chart_data()
 
     if methods:
         df = df[df["method"].isin(methods)]
@@ -96,19 +148,9 @@ def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=N
         df = df[df["endpoint"] == endpoint]
 
     if df.empty:
-        return {
-            "method_chart_data": {},
-            "request_error_chart": {
-                "x": [],
-                "total_requests": [],
-                "error_count": []
-            },
-            "latency_chart": {
-                "x": [],
-                "avg_latency": []
-            }
-        }
+        return _empty_chart_data()
 
+    df = df.copy()
     if interval == "day":
         df["bucket"] = df["Timestamp"].dt.floor("D")
     else:

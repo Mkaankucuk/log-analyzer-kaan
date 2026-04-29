@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ current_lang }}">
 <head>
     <meta charset="UTF-8">
-    <title>Trend Logs Giriş</title>
+    <title>{{ t("trend_page_title") }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="dashboard-page">
@@ -13,43 +13,43 @@
     <main class="main-content">
         <div class="dashboard">
             <section class="section-box">
-                <h2 class="section-title">Trend Logs Giriş</h2>
+                <h2 class="section-title">{{ t("trend_page_title") }}</h2>
 
                 <div class="cards">
                     <div class="card warning">
-                        <h3>Failed Login Count</h3>
+                        <h3>{{ t("failed_login_count") }}</h3>
                         <p id="failed-login-count">{{ failed_login_count }}</p>
                     </div>
 
                     <div class="card warning">
-                        <h3>Failed Login Rate</h3>
+                        <h3>{{ t("failed_login_rate") }}</h3>
                         <p id="failed-login-rate">%{{ failed_login_rate }}</p>
                     </div>
                 </div>
 
-                <h3 class="sub-title">Login Logları</h3>
+                <h3 class="sub-title">{{ t("login_logs") }}</h3>
 
                 <table class="dashboard-table">
                     <thead>
                         <tr>
-                            <th>Kullanıcı</th>
-                            <th>Durum</th>
-                            <th>Zaman</th>
+                            <th>{{ t("user") }}</th>
+                            <th>{{ t("status") }}</th>
+                            <th>{{ t("time") }}</th>
                         </tr>
                     </thead>
                     <tbody id="login-logs-body">
                         {% for log in failed_logins %}
-                        <tr style="color:red;">
+                        <tr class="trend-row-failed">
                             <td>{{ log.username }}</td>
-                            <td>Hatalı</td>
+                            <td>{{ t("status_failed") }}</td>
                             <td>{{ log.time }}</td>
                         </tr>
                         {% endfor %}
 
                         {% for log in successful_logins %}
-                        <tr style="color:green;">
+                        <tr class="trend-row-success">
                             <td>{{ log.username }}</td>
-                            <td>Başarılı</td>
+                            <td>{{ t("status_success") }}</td>
                             <td>{{ log.time }}</td>
                         </tr>
                         {% endfor %}
@@ -60,6 +60,9 @@
     </main>
 </div>
 
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
 <script src="{{ url_for('static', filename='js/trend_logs.js') }}"></script>
 
 </body>

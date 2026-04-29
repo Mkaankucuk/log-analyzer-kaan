@@ -1,4 +1,5 @@
 function drawStatusChart(data) {
+    const t = window.i18n || {};
     Plotly.newPlot(
         "statusChart",
         [
@@ -7,19 +8,20 @@ function drawStatusChart(data) {
                 y: data.y,
                 type: "bar",
                 marker: { color: "#1f4b99" },
-                name: "Status Code"
+                name: t.js_status_code
             }
         ],
         {
-            title: "Status Code Distribution",
-            xaxis: { title: "Status Code" },
-            yaxis: { title: "Count" }
+            title: t.js_status_code_distribution,
+            xaxis: { title: t.js_status_code },
+            yaxis: { title: t.js_count }
         },
         { responsive: true }
     );
 }
 
 function drawErrorTypeChart(data) {
+    const t = window.i18n || {};
     const colors = ["#163b65", "#245c93", "#2f7f8f", "#4b5d9a", "#3f4a56"];
 
     Plotly.newPlot(
@@ -32,19 +34,20 @@ function drawErrorTypeChart(data) {
                 marker: {
                     color: colors.slice(0, data.x.length)
                 },
-                name: "Error Type"
+                name: t.js_error_type
             }
         ],
         {
-            title: "Error Type Distribution",
-            xaxis: { title: "Error Type" },
-            yaxis: { title: "Count" }
+            title: t.js_error_type_distribution,
+            xaxis: { title: t.js_error_type },
+            yaxis: { title: t.js_count }
         },
         { responsive: true }
     );
 }
 
 function drawLatencyChart(data) {
+    const t = window.i18n || {};
     Plotly.newPlot(
         "latencyChart",
         [
@@ -61,13 +64,13 @@ function drawLatencyChart(data) {
                     color: "#245c93",
                     size: 6
                 },
-                name: "Average Latency"
+                name: t.js_average_latency
             }
         ],
         {
-            title: "Average Latency Over Time",
-            xaxis: { title: "Time" },
-            yaxis: { title: "Latency (ms)" }
+            title: t.js_average_latency_over_time,
+            xaxis: { title: t.time },
+            yaxis: { title: t.js_latency_ms }
         },
         { responsive: true }
     );
@@ -80,12 +83,15 @@ function renderAllSecurityCharts(chartData) {
 }
 
 async function applySecurityFilter() {
+    const t = window.i18n || {};
     const interval = document.getElementById("latencyInterval").value;
-
-    const response = await fetch(`/api/security-chart-data?interval=${interval}`);
-    const data = await response.json();
-
-    drawLatencyChart(data.latency_chart || { x: [], y: [] });
+    try {
+        const response = await fetch(`/api/security-chart-data?interval=${interval}`);
+        const data = await response.json();
+        drawLatencyChart(data.latency_chart || { x: [], y: [] });
+    } catch (error) {
+        console.log(t.js_security_filter_error, error);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

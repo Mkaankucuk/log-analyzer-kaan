@@ -1,5 +1,6 @@
 const initialDataElement = document.getElementById("access-logs-initial-data");
 const initialData = initialDataElement ? JSON.parse(initialDataElement.textContent) : {};
+const t = window.i18n || {};
 
 let methodChartData = initialData.method_chart_data || {};
 let requestErrorChart = initialData.request_error_chart || { x: [], total_requests: [], error_count: [] };
@@ -19,6 +20,18 @@ function getSelectedMethods() {
         .map((cb) => cb.value);
 }
 
+function buildFilterParams() {
+    const params = new URLSearchParams();
+    getSelectedMethods().forEach((method) => params.append("method", method));
+
+    if (statusGroupFilter.value) params.append("status_group", statusGroupFilter.value);
+    if (statusCodeFilter.value) params.append("status_code", statusCodeFilter.value);
+    if (endpointFilter.value) params.append("endpoint", endpointFilter.value);
+    if (intervalFilter.value) params.append("interval", intervalFilter.value);
+
+    return params;
+}
+
 function drawMethodChart() {
     const selectedMethods = Object.keys(methodChartData);
 
@@ -33,9 +46,9 @@ function drawMethodChart() {
         }));
 
     Plotly.newPlot("requestMethodChart", traces, {
-        title: "Istek Sayisi Zamanla",
-        xaxis: { title: "Zaman" },
-        yaxis: { title: "Istek Sayisi" },
+        title: t.js_request_count_over_time,
+        xaxis: { title: t.time },
+        yaxis: { title: t.js_request_count },
         template: "plotly_white"
     }, { responsive: true });
 }
@@ -47,22 +60,22 @@ function drawRequestErrorChart() {
             y: requestErrorChart.total_requests,
             mode: "lines+markers",
             type: "scatter",
-            name: "Total Requests"
+            name: t.js_total_requests
         },
         {
             x: requestErrorChart.x,
             y: requestErrorChart.error_count,
             mode: "lines+markers",
             type: "scatter",
-            name: "Error Count",
+            name: t.js_error_count,
             yaxis: "y2"
         }
     ], {
-        title: "Request and Error Counts Over Time",
-        xaxis: { title: "Time" },
-        yaxis: { title: "Total Requests" },
+        title: t.js_request_error_over_time,
+        xaxis: { title: t.time },
+        yaxis: { title: t.js_total_requests },
         yaxis2: {
-            title: "Error Count",
+            title: t.js_error_count,
             overlaying: "y",
             side: "right"
         },
@@ -77,12 +90,12 @@ function drawLatencyChart() {
             y: latencyChart.avg_latency,
             mode: "lines+markers",
             type: "scatter",
-            name: "Average Latency"
+            name: t.js_average_latency
         }
     ], {
-        title: "Average Latency Over Time",
-        xaxis: { title: "Time" },
-        yaxis: { title: "Latency (ms)" },
+        title: t.js_average_latency_over_time,
+        xaxis: { title: t.time },
+        yaxis: { title: t.js_latency_ms },
         template: "plotly_white"
     }, { responsive: true });
 }
@@ -94,26 +107,7 @@ function renderAllCharts() {
 }
 
 async function applyFilters() {
-    const methods = getSelectedMethods();
-    const params = new URLSearchParams();
-
-    methods.forEach((m) => params.append("method", m));
-
-    if (statusGroupFilter.value) {
-        params.append("status_group", statusGroupFilter.value);
-    }
-
-    if (statusCodeFilter.value) {
-        params.append("status_code", statusCodeFilter.value);
-    }
-
-    if (endpointFilter.value) {
-        params.append("endpoint", endpointFilter.value);
-    }
-
-    if (intervalFilter.value) {
-        params.append("interval", intervalFilter.value);
-    }
+    const params = buildFilterParams();
 
     try {
         const response = await fetch(`/api/access-logs-data?${params.toString()}`);
@@ -125,7 +119,7 @@ async function applyFilters() {
 
         renderAllCharts();
     } catch (error) {
-        console.log("Filtre uygulama hatasi:", error);
+        console.log(t.js_filter_apply_error, error);
     }
 }
 

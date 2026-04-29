@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ current_lang }}">
 <head>
     <meta charset="UTF-8">
-    <title>Security Logs</title>
+    <title>{{ t("security_page_title") }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -15,32 +15,32 @@
         <div class="dashboard">
 
             <section class="section-box">
-                <h1 class="section-title">Security Logs</h1>
+                <h1 class="section-title">{{ t("security_page_title") }}</h1>
 
                 <div class="cards">
                     <div class="card">
-                        <h3>Total Security Logs</h3>
+                        <h3>{{ t("total_security_logs") }}</h3>
                         <p>{{ summary.total_logs }}</p>
                     </div>
                 </div>
             </section>
 
             <section class="section-box">
-                <h2 class="sub-title">Status Code Dağılımı</h2>
+                <h2 class="sub-title">{{ t("status_distribution") }}</h2>
                 <div class="chart-container">
                     <div id="statusChart"></div>
                 </div>
             </section>
 
             <section class="section-box">
-                <h2 class="sub-title">Error Type Dağılımı</h2>
+                <h2 class="sub-title">{{ t("error_type_distribution") }}</h2>
                 <div class="chart-container">
                     <div id="errorTypeChart"></div>
                 </div>
             </section>
 
             <section class="section-box">
-                <h2 class="sub-title">Latency Trend</h2>
+                <h2 class="sub-title">{{ t("latency_trend") }}</h2>
 
                 <div class="chart-container">
                     <div id="latencyChart"></div>
@@ -48,15 +48,15 @@
 
                 <div class="latency-filter-box">
                     <div class="filter-group">
-                        <label for="latencyInterval">Zaman Kırılımı</label>
+                        <label for="latencyInterval">{{ t("time_interval") }}</label>
                         <select id="latencyInterval">
-                            <option value="hour" {% if selected_interval == 'hour' %}selected{% endif %}>Saatlik</option>
-                            <option value="day" {% if selected_interval == 'day' %}selected{% endif %}>Günlük</option>
+                            <option value="hour" {% if selected_interval == 'hour' %}selected{% endif %}>{{ t("hourly") }}</option>
+                            <option value="day" {% if selected_interval == 'day' %}selected{% endif %}>{{ t("daily") }}</option>
                         </select>
                     </div>
 
                     <div class="filter-actions">
-                        <button id="applySecurityFilter" type="button">Filtrele</button>
+                        <button id="applySecurityFilter" type="button">{{ t("filter_button") }}</button>
                     </div>
                 </div>
             </section>
@@ -66,6 +66,7 @@
 </div>
 
 <script>
+    window.i18n = {{ js_translations | tojson }};
     window.securityChartData = {
         statusChart: {{ status_chart | safe }},
         errorTypeChart: {{ error_type_chart | safe }},

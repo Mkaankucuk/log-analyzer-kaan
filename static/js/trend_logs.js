@@ -1,4 +1,5 @@
 async function updateDashboard() {
+    const t = window.i18n || {};
     try {
         const response = await fetch("/metrics");
         if (!response.ok) {
@@ -17,7 +18,7 @@ async function updateDashboard() {
             loginLogsBody.innerHTML += `
                 <tr style="color:red;">
                     <td>${log.username}</td>
-                    <td>Hatali</td>
+                    <td>${t.status_failed}</td>
                     <td>${log.time}</td>
                 </tr>
             `;
@@ -27,13 +28,13 @@ async function updateDashboard() {
             loginLogsBody.innerHTML += `
                 <tr style="color:green;">
                     <td>${log.username}</td>
-                    <td>Basarili</td>
+                    <td>${t.status_success}</td>
                     <td>${log.time}</td>
                 </tr>
             `;
         });
     } catch (error) {
-        console.log("Trend guncelleme hatasi:", error);
+        console.log(t.js_trend_update_error, error);
     }
 }
 

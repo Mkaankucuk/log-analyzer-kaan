@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ current_lang }}">
 <head>
     <meta charset="UTF-8">
-    <title>Access Logs Grafik</title>
+    <title>{{ t("access_page_title") }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -14,14 +14,14 @@
     <main class="main-content">
         <div class="dashboard">
             <section class="section-box">
-                <h2 class="section-title">Access Logs Grafik</h2>
+                <h2 class="section-title">{{ t("access_page_title") }}</h2>
 
                 <div class="chart-box">
-                    <h3>Filtreler</h3>
+                    <h3>{{ t("filters") }}</h3>
 
                     <div class="filter-panel">
                         <div class="filter-group">
-                            <label>Method</label>
+                            <label>{{ t("method") }}</label>
                             <div class="filter-inline">
                                 {% for method in filter_methods %}
                                 <label>
@@ -33,9 +33,9 @@
                         </div>
 
                         <div class="filter-group">
-                            <label for="statusGroupFilter">Status Grubu</label>
+                            <label for="statusGroupFilter">{{ t("status_group") }}</label>
                             <select id="statusGroupFilter">
-                                <option value="">Tümü</option>
+                                <option value="">{{ t("all") }}</option>
                                 <option value="2xx">2xx</option>
                                 <option value="3xx">3xx</option>
                                 <option value="4xx">4xx</option>
@@ -44,9 +44,9 @@
                         </div>
 
                         <div class="filter-group">
-                            <label for="statusCodeFilter">Status Kodu</label>
+                            <label for="statusCodeFilter">{{ t("status_code") }}</label>
                             <select id="statusCodeFilter">
-                                <option value="">Tümü</option>
+                                <option value="">{{ t("all") }}</option>
                                 {% for code in filter_status_codes %}
                                 <option value="{{ code }}">{{ code }}</option>
                                 {% endfor %}
@@ -54,9 +54,9 @@
                         </div>
 
                         <div class="filter-group">
-                            <label for="endpointFilter">Endpoint</label>
+                            <label for="endpointFilter">{{ t("endpoint") }}</label>
                             <select id="endpointFilter">
-                                <option value="all">Tümü</option>
+                                <option value="all">{{ t("all") }}</option>
                                 {% for ep in filter_endpoints %}
                                 <option value="{{ ep }}">{{ ep }}</option>
                                 {% endfor %}
@@ -64,32 +64,32 @@
                         </div>
 
                         <div class="filter-group">
-                            <label for="intervalFilter">Zaman Kırılımı</label>
+                            <label for="intervalFilter">{{ t("time_interval") }}</label>
                             <select id="intervalFilter">
-                                <option value="hour">Saatlik</option>
-                                <option value="day">Günlük</option>
+                                <option value="hour">{{ t("hourly") }}</option>
+                                <option value="day">{{ t("daily") }}</option>
                             </select>
                         </div>
 
                         <div class="filter-actions">
-                            <button type="button" id="applyFiltersBtn">Filtrele</button>
-                            <button type="button" id="resetFiltersBtn">Sıfırla</button>
+                            <button type="button" id="applyFiltersBtn">{{ t("filter_button") }}</button>
+                            <button type="button" id="resetFiltersBtn">{{ t("reset_button") }}</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="chart-box">
-                    <h3>İstek Tipine Göre Log Grafiği</h3>
+                    <h3>{{ t("request_type_chart_title") }}</h3>
                     <div id="requestMethodChart"></div>
                 </div>
 
                 <div class="chart-box">
-                    <h3>Request and Error Sayıları</h3>
+                    <h3>{{ t("request_error_chart_title") }}</h3>
                     <div id="requestErrorChart"></div>
                 </div>
 
                 <div class="chart-box">
-                    <h3>Ortalama Latency Sayıları</h3>
+                    <h3>{{ t("latency_chart_title") }}</h3>
                     <div id="latencyChart"></div>
                 </div>
             </section>
@@ -103,6 +103,9 @@
         "request_error_chart": request_error_chart,
         "latency_chart": latency_chart
     } | tojson }}
+</script>
+<script>
+    window.i18n = {{ js_translations | tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/access_logs.js') }}"></script>
 

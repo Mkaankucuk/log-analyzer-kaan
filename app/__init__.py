@@ -1,5 +1,6 @@
 from flask import Flask
 from app.core import Config
+from app.core.i18n import get_locale, get_text, SUPPORTED_LANGUAGES, get_js_translations
 
 
 def create_app():
@@ -24,5 +25,14 @@ def create_app():
     app.register_blueprint(trend_bp)
     app.register_blueprint(metrics_bp)
     app.register_blueprint(security_bp)
+
+    @app.context_processor
+    def inject_i18n():
+        return {
+            "t": get_text,
+            "current_lang": get_locale(),
+            "supported_langs": sorted(SUPPORTED_LANGUAGES),
+            "js_translations": get_js_translations()
+        }
 
     return app

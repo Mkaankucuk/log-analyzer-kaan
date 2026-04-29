@@ -1,4 +1,5 @@
 async function updateDashboard() {
+    const t = window.i18n || {};
     try {
         const response = await fetch("/metrics");
         if (!response.ok) {
@@ -29,7 +30,7 @@ async function updateDashboard() {
             `;
         });
     } catch (error) {
-        console.log("Dashboard guncelleme hatasi:", error);
+        console.log(t.js_system_update_error, error);
     }
 }
 
