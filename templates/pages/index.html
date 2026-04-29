@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("login_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="language-switcher login-language-switcher">
+            <span>{{ t("language") }}</span>
+            <form method="POST" action="{{ url_for('auth.set_language', lang='tr') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="{% if current_lang == 'tr' %}active-language{% endif %}">{{ t("language_tr") }}</button>
+            </form>
+            <form method="POST" action="{{ url_for('auth.set_language', lang='en') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="{% if current_lang == 'en' %}active-language{% endif %}">{{ t("language_en") }}</button>
+            </form>
+        </div>
+
+        <h1>{{ t("admin_login") }}</h1>
+
+        {% if error %}
+            <p class="login-error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+
+            <div class="form-group">
+                <input type="text" name="username" placeholder="{{ t('username_placeholder') }}" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" placeholder="{{ t('password_placeholder') }}" required>
+            </div>
+
+            <button class="login-button" type="submit">{{ t("login_button") }}</button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

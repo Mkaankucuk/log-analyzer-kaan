@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("access_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                <h2 class="section-title">{{ t("access_page_title") }}</h2>
+
+                <div class="chart-box">
+                    <h3>{{ t("filters") }}</h3>
+
+                    <div class="filter-panel">
+                        <div class="filter-group">
+                            <label>{{ t("method") }}</label>
+                            <div class="filter-inline">
+                                {% for method in filter_methods %}
+                                <label>
+                                    <input type="checkbox" class="method-checkbox" value="{{ method }}" checked>
+                                    {{ method }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="statusGroupFilter">{{ t("status_group") }}</label>
+                            <select id="statusGroupFilter">
+                                <option value="">{{ t("all") }}</option>
+                                <option value="2xx">2xx</option>
+                                <option value="3xx">3xx</option>
+                                <option value="4xx">4xx</option>
+                                <option value="5xx">5xx</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="statusCodeFilter">{{ t("status_code") }}</label>
+                            <select id="statusCodeFilter">
+                                <option value="">{{ t("all") }}</option>
+                                {% for code in filter_status_codes %}
+                                <option value="{{ code }}">{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="endpointFilter">{{ t("endpoint") }}</label>
+                            <select id="endpointFilter">
+                                <option value="all">{{ t("all") }}</option>
+                                {% for ep in filter_endpoints %}
+                                <option value="{{ ep }}">{{ ep }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="intervalFilter">{{ t("time_interval") }}</label>
+                            <select id="intervalFilter">
+                                <option value="hour">{{ t("hourly") }}</option>
+                                <option value="day">{{ t("daily") }}</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="button" id="applyFiltersBtn">{{ t("filter_button") }}</button>
+                            <button type="button" id="resetFiltersBtn">{{ t("reset_button") }}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>{{ t("request_type_chart_title") }}</h3>
+                    <div id="requestMethodChart"></div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>{{ t("request_error_chart_title") }}</h3>
+                    <div id="requestErrorChart"></div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>{{ t("latency_chart_title") }}</h3>
+                    <div id="latencyChart"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script id="access-logs-initial-data" type="application/json">
+    {{ {
+        "method_chart_data": method_chart_data,
+        "request_error_chart": request_error_chart,
+        "latency_chart": latency_chart
+    } | tojson }}
+</script>
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/access_logs.js') }}"></script>
+
+</body>
+</html>

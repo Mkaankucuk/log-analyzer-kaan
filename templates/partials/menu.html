@@ -1,0 +1,60 @@
+<div class="sidebar">
+    <div>
+        <div class="sidebar-header">
+            <h2>{{ t("app_name") }}</h2>
+            <p>{{ t("welcome_user", user=user) }}</p>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="{{ url_for('system.system_logs') }}"
+               class="sidebar-item {% if active_page == 'system' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("system_menu_title") }}</strong>
+                    <small>{{ t("system_menu_subtitle") }}</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('access.access_logs') }}"
+               class="sidebar-item {% if active_page == 'access' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("access_menu_title") }}</strong>
+                    <small>{{ t("access_menu_subtitle") }}</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('trend.trend_logs') }}"
+               class="sidebar-item {% if active_page == 'trend' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("trend_menu_title") }}</strong>
+                    <small>{{ t("trend_menu_subtitle") }}</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('security.security_logs') }}"
+               class="sidebar-item {% if active_page == 'security' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("security_menu_title") }}</strong>
+                    <small>{{ t("security_menu_subtitle") }}</small>
+                </div>
+            </a>
+        </nav>
+
+        <div class="language-switcher">
+            <span>{{ t("language") }}</span>
+            <form method="POST" action="{{ url_for('auth.set_language', lang='tr') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="{% if current_lang == 'tr' %}active-language{% endif %}">{{ t("language_tr") }}</button>
+            </form>
+            <form method="POST" action="{{ url_for('auth.set_language', lang='en') }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="{% if current_lang == 'en' %}active-language{% endif %}">{{ t("language_en") }}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="{{ url_for('auth.logout') }}" class="sidebar-logout">
+            {{ t("logout") }}
+        </a>
+    </div>
+</div>

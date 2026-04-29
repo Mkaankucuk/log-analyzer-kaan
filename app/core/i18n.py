@@ -1,0 +1,183 @@
+from flask import session
+
+
+SUPPORTED_LANGUAGES = {"tr", "en"}
+DEFAULT_LANGUAGE = "tr"
+
+
+TRANSLATIONS = {
+    "tr": {
+        "app_name": "Log Analyzer",
+        "welcome_user": "Hoş geldin, {user}",
+        "logout": "Çıkış Yap",
+        "language": "Dil",
+        "language_tr": "Türkçe",
+        "language_en": "English",
+        "login_title": "Giriş",
+        "admin_login": "Yönetici Girişi",
+        "username_placeholder": "Kullanıcı adı",
+        "password_placeholder": "Şifre",
+        "login_button": "Giriş Yap",
+        "invalid_login": "Kullanıcı adı veya şifre hatalı.",
+        "system_menu_title": "Sistem Logları CPU",
+        "system_menu_subtitle": "Sistem metrikleri",
+        "access_menu_title": "Erişim Logları",
+        "access_menu_subtitle": "İstek ve grafik analizi",
+        "trend_menu_title": "Trend Logları",
+        "trend_menu_subtitle": "Giriş analizleri",
+        "security_menu_title": "Güvenlik Logları",
+        "security_menu_subtitle": "Hata ve güvenlik analizi",
+        "system_page_title": "Sistem Logları CPU",
+        "total_logs": "Toplam Log",
+        "error_logs": "Hata Logları",
+        "warning_logs": "Uyarı Logları",
+        "cpu_usage": "CPU Kullanımı",
+        "memory_usage": "Bellek Kullanımı",
+        "top_processes": "En Çok Kaynak Kullanan Uygulamalar",
+        "application": "Uygulama",
+        "access_page_title": "Erişim Logları Grafikleri",
+        "filters": "Filtreler",
+        "method": "Yöntem",
+        "status_group": "Durum Grubu",
+        "status_code": "Durum Kodu",
+        "endpoint": "Uç Nokta",
+        "all": "Tümü",
+        "time_interval": "Zaman Kırılımı",
+        "hourly": "Saatlik",
+        "daily": "Günlük",
+        "filter_button": "Filtrele",
+        "reset_button": "Sıfırla",
+        "request_type_chart_title": "İstek Tipine Göre Log Grafiği",
+        "request_error_chart_title": "İstek ve Hata Sayıları",
+        "latency_chart_title": "Ortalama Gecikme",
+        "security_page_title": "Güvenlik Logları",
+        "total_security_logs": "Toplam Güvenlik Logu",
+        "status_distribution": "Durum Kodu Dağılımı",
+        "error_type_distribution": "Hata Türü Dağılımı",
+        "latency_trend": "Gecikme Trendi",
+        "trend_page_title": "Trend Logları Giriş",
+        "failed_login_count": "Başarısız Giriş Sayısı",
+        "failed_login_rate": "Başarısız Giriş Oranı",
+        "login_logs": "Giriş Logları",
+        "user": "Kullanıcı",
+        "status": "Durum",
+        "time": "Zaman",
+        "status_failed": "Hatalı",
+        "status_success": "Başarılı",
+        "js_request_count_over_time": "İstek Sayısı Zamanla",
+        "js_request_count": "İstek Sayısı",
+        "js_total_requests": "Toplam İstek",
+        "js_error_count": "Hata Sayısı",
+        "js_request_error_over_time": "İstek ve Hata Sayıları Zamanla",
+        "js_average_latency": "Ortalama Gecikme",
+        "js_average_latency_over_time": "Ortalama Gecikme Zamanla",
+        "js_latency_ms": "Gecikme (ms)",
+        "js_status_code_distribution": "Durum Kodu Dağılımı",
+        "js_status_code": "Durum Kodu",
+        "js_count": "Sayı",
+        "js_error_type_distribution": "Hata Türü Dağılımı",
+        "js_error_type": "Hata Türü",
+        "js_filter_apply_error": "Filtre uygulama hatası:",
+        "js_security_filter_error": "Güvenlik filtreleme hatası:",
+        "js_trend_update_error": "Trend güncelleme hatası:",
+        "js_system_update_error": "Gösterge paneli güncelleme hatası:"
+    },
+    "en": {
+        "app_name": "Log Analyzer",
+        "welcome_user": "Welcome, {user}",
+        "logout": "Log Out",
+        "language": "Language",
+        "language_tr": "Turkish",
+        "language_en": "English",
+        "login_title": "Login",
+        "admin_login": "Admin Login",
+        "username_placeholder": "Username",
+        "password_placeholder": "Password",
+        "login_button": "Log In",
+        "invalid_login": "Invalid username or password.",
+        "system_menu_title": "System Logs CPU",
+        "system_menu_subtitle": "System metrics",
+        "access_menu_title": "Access Logs",
+        "access_menu_subtitle": "Request and chart analytics",
+        "trend_menu_title": "Trend Logs",
+        "trend_menu_subtitle": "Login analytics",
+        "security_menu_title": "Security Logs",
+        "security_menu_subtitle": "Error and security analytics",
+        "system_page_title": "System Logs CPU",
+        "total_logs": "Total Logs",
+        "error_logs": "Error Logs",
+        "warning_logs": "Warning Logs",
+        "cpu_usage": "CPU Usage",
+        "memory_usage": "Memory Usage",
+        "top_processes": "Top Resource Consuming Applications",
+        "application": "Application",
+        "access_page_title": "Access Logs Charts",
+        "filters": "Filters",
+        "method": "Method",
+        "status_group": "Status Group",
+        "status_code": "Status Code",
+        "endpoint": "Endpoint",
+        "all": "All",
+        "time_interval": "Time Interval",
+        "hourly": "Hourly",
+        "daily": "Daily",
+        "filter_button": "Apply",
+        "reset_button": "Reset",
+        "request_type_chart_title": "Logs by Request Type",
+        "request_error_chart_title": "Request and Error Counts",
+        "latency_chart_title": "Average Latency",
+        "security_page_title": "Security Logs",
+        "total_security_logs": "Total Security Logs",
+        "status_distribution": "Status Code Distribution",
+        "error_type_distribution": "Error Type Distribution",
+        "latency_trend": "Latency Trend",
+        "trend_page_title": "Trend Logs Login",
+        "failed_login_count": "Failed Login Count",
+        "failed_login_rate": "Failed Login Rate",
+        "login_logs": "Login Logs",
+        "user": "User",
+        "status": "Status",
+        "time": "Time",
+        "status_failed": "Failed",
+        "status_success": "Successful",
+        "js_request_count_over_time": "Request Count Over Time",
+        "js_request_count": "Request Count",
+        "js_total_requests": "Total Requests",
+        "js_error_count": "Error Count",
+        "js_request_error_over_time": "Request and Error Counts Over Time",
+        "js_average_latency": "Average Latency",
+        "js_average_latency_over_time": "Average Latency Over Time",
+        "js_latency_ms": "Latency (ms)",
+        "js_status_code_distribution": "Status Code Distribution",
+        "js_status_code": "Status Code",
+        "js_count": "Count",
+        "js_error_type_distribution": "Error Type Distribution",
+        "js_error_type": "Error Type",
+        "js_filter_apply_error": "Filter apply error:",
+        "js_security_filter_error": "Security filter error:",
+        "js_trend_update_error": "Trend update error:",
+        "js_system_update_error": "Dashboard update error:"
+    }
+}
+
+
+def get_locale():
+    language = session.get("lang", DEFAULT_LANGUAGE)
+    if language not in SUPPORTED_LANGUAGES:
+        return DEFAULT_LANGUAGE
+    return language
+
+
+def get_text(key, **kwargs):
+    locale = get_locale()
+    value = TRANSLATIONS.get(locale, {}).get(key)
+    if value is None:
+        value = TRANSLATIONS[DEFAULT_LANGUAGE].get(key, key)
+    if kwargs:
+        return value.format(**kwargs)
+    return value
+
+
+def get_js_translations():
+    locale = get_locale()
+    return TRANSLATIONS.get(locale, TRANSLATIONS[DEFAULT_LANGUAGE])
