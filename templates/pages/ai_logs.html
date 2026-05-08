@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("ai_logs_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                <h2 class="section-title">{{ t("ai_logs_page_title") }}</h2>
+
+                <div class="chart-box">
+                    <div class="ai-controls">
+                        <div class="filter-group">
+                            <label for="aiSourceFilter">Veri Kaynağı</label>
+                            <select id="aiSourceFilter">
+                                <option value="access" selected>Access Logs</option>
+                                <option value="security">Security Logs</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>{{ t("method") }}</label>
+                            <div class="filter-inline" id="aiMethodFilter">
+                                {% for method in filter_methods %}
+                                <label>
+                                    <input type="checkbox" class="ai-method-checkbox" value="{{ method }}" checked>
+                                    {{ method }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label for="aiStatusGroupFilter">{{ t("status_group") }}</label>
+                            <select id="aiStatusGroupFilter">
+                                <option value="">{{ t("all") }}</option>
+                                <option value="2xx">2xx</option>
+                                <option value="3xx">3xx</option>
+                                <option value="4xx">4xx</option>
+                                <option value="5xx">5xx</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="aiEndpointFilter">{{ t("endpoint") }}</label>
+                            <select id="aiEndpointFilter">
+                                <option value="all">{{ t("all") }}</option>
+                                {% for ep in filter_endpoints %}
+                                <option value="{{ ep }}">{{ ep }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="aiLimit">{{ t("ai_logs_limit_label") }}</label>
+                            <select id="aiLimit">
+                                <option value="100" selected>100</option>
+                                <option value="200">200</option>
+                                <option value="500">500</option>
+                                <option value="800">800</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                                <option value="3000">3000</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Yanıt Dili</label>
+                            <div class="ai-response-mode" id="aiResponseMode">
+                                <button type="button" class="ai-mode-btn active" data-mode="tr">Türkçe</button>
+                                <button type="button" class="ai-mode-btn" data-mode="en">English</button>
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button id="runAiAnalysisBtn" type="button">{{ t("ai_logs_run_button") }}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>{{ t("ai_logs_result_title") }}</h3>
+                    <pre id="aiResult" class="ai-result"></pre>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/ai_logs.js') }}"></script>
+
+</body>
+</html>

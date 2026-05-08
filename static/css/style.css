@@ -461,6 +461,57 @@ body {
     font-weight: 600;
 }
 
+.ai-description {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.ai-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.ai-response-mode {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ai-mode-btn {
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 7px 12px;
+    background: #f8fafc;
+    color: #0f172a;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.ai-mode-btn.active {
+    background: #1d4ed8;
+    color: #fff;
+    border-color: #1d4ed8;
+}
+
+.ai-result {
+    margin: 0;
+    height: 360px;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+    color: #0f172a;
+}
+
 /* Responsive */
 @media (max-width: 980px) {
     .dashboard-page .layout {

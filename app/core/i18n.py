@@ -27,6 +27,8 @@ TRANSLATIONS = {
         "trend_menu_subtitle": "Giriş analizleri",
         "security_menu_title": "Güvenlik Logları",
         "security_menu_subtitle": "Hata ve güvenlik analizi",
+        "ai_logs_menu_title": "AI Log Analizi",
+        "ai_logs_menu_subtitle": "Ollama ile akıllı yorumlama",
         "system_page_title": "Sistem Logları CPU",
         "total_logs": "Toplam Log",
         "error_logs": "Hata Logları",
@@ -80,7 +82,13 @@ TRANSLATIONS = {
         "js_filter_apply_error": "Filtre uygulama hatası:",
         "js_security_filter_error": "Güvenlik filtreleme hatası:",
         "js_trend_update_error": "Trend güncelleme hatası:",
-        "js_system_update_error": "Gösterge paneli güncelleme hatası:"
+        "js_system_update_error": "Gösterge paneli güncelleme hatası:",
+        "ai_logs_page_title": "AI Log Analizi",
+        "ai_logs_description": "Access loglarını Ollama ile analiz ederek risk ve aksiyon önerileri üret.",
+        "ai_logs_limit_label": "İncelenecek kayıt sayısı",
+        "ai_logs_run_button": "AI Analizi Başlat",
+        "ai_logs_loading": "Analiz yapılıyor, lütfen bekleyin...",
+        "ai_logs_result_title": "AI Analiz Sonucu"
     },
     "en": {
         "app_name": "Log Analyzer",
@@ -103,6 +111,8 @@ TRANSLATIONS = {
         "trend_menu_subtitle": "Login analytics",
         "security_menu_title": "Security Logs",
         "security_menu_subtitle": "Error and security analytics",
+        "ai_logs_menu_title": "AI Log Analysis",
+        "ai_logs_menu_subtitle": "Smart insights with Ollama",
         "system_page_title": "System Logs CPU",
         "total_logs": "Total Logs",
         "error_logs": "Error Logs",
@@ -156,7 +166,13 @@ TRANSLATIONS = {
         "js_filter_apply_error": "Filter apply error:",
         "js_security_filter_error": "Security filter error:",
         "js_trend_update_error": "Trend update error:",
-        "js_system_update_error": "Dashboard update error:"
+        "js_system_update_error": "Dashboard update error:",
+        "ai_logs_page_title": "AI Log Analysis",
+        "ai_logs_description": "Analyze access logs with Ollama and generate risks plus actionable recommendations.",
+        "ai_logs_limit_label": "Number of records to analyze",
+        "ai_logs_run_button": "Start AI Analysis",
+        "ai_logs_loading": "Running analysis, please wait...",
+        "ai_logs_result_title": "AI Analysis Result"
     }
 }
 

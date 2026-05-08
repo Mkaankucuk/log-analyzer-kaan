@@ -11,6 +11,7 @@ _REQUIRED_COLUMNS = ["Timestamp", "latency", "status", "method", "endpoint"]
 _cached_df = pd.DataFrame()
 _cache_timestamp = 0.0
 _cache_db_mtime = None
+_chart_cache = {}
 _cached_filter_options = {
     "methods": [],
     "endpoints": [],
@@ -98,6 +99,7 @@ def load_request_logs():
     _cached_df = _prepare_request_logs()
     _cache_timestamp = current_time
     _cache_db_mtime = db_mtime
+    _chart_cache.clear()
     _refresh_filter_options_cache(_cached_df)
     return _cached_df
 
@@ -125,10 +127,24 @@ def get_access_filter_options():
 
 
 def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=None, interval="hour"):
+    interval = "day" if interval == "day" else "hour"
+    method_tuple = tuple(sorted(methods)) if methods else ()
+    cache_key = (
+        method_tuple,
+        status_group or "",
+        str(status_code) if status_code else "",
+        endpoint or "all",
+        interval
+    )
+
     df = load_request_logs()
 
     if df.empty:
         return _empty_chart_data()
+
+    cached_result = _chart_cache.get(cache_key)
+    if cached_result is not None:
+        return cached_result
 
     if methods:
         df = df[df["method"].isin(methods)]
@@ -190,7 +206,7 @@ def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=N
         .sort_values("bucket")
     )
 
-    return {
+    result = {
         "method_chart_data": method_chart_data,
         "request_error_chart": {
             "x": req_err["bucket"].astype(str).tolist(),
@@ -202,3 +218,5 @@ def get_chart_data(methods=None, status_group=None, status_code=None, endpoint=N
             "avg_latency": [round(v, 2) for v in latency_df["avg_latency"].tolist()]
         }
     }
+    _chart_cache[cache_key] = result
+    return result

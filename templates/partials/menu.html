@@ -37,6 +37,14 @@
                     <small>{{ t("security_menu_subtitle") }}</small>
                 </div>
             </a>
+
+            <a href="{{ url_for('ai_logs.ai_logs_page') }}"
+               class="sidebar-item {% if active_page == 'ai_logs' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("ai_logs_menu_title") }}</strong>
+                    <small>{{ t("ai_logs_menu_subtitle") }}</small>
+                </div>
+            </a>
         </nav>
 
         <div class="language-switcher">

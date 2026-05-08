@@ -18,6 +18,7 @@ def create_app():
     from app.api.routes.trend import trend_bp
     from app.api.routes.metrics import metrics_bp
     from app.api.routes.security import security_bp
+    from app.api.routes.ai_logs import ai_logs_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(system_bp)
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(trend_bp)
     app.register_blueprint(metrics_bp)
     app.register_blueprint(security_bp)
+    app.register_blueprint(ai_logs_bp)
 
     @app.context_processor
     def inject_i18n():
