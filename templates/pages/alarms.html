@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("alarms_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                {% set intro_text = t('page_intro_alarms') %}
+                {% include 'partials/page_intro.html' %}
+
+                <div class="alarm-job-panel cards" id="alarmJobPanel">
+                    <div class="card">
+                        <h3>{{ t("alarms_job_title") }}</h3>
+                        <p id="alarmJobState">—</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("alarms_job_interval") }}</h3>
+                        <p id="alarmJobInterval">—</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("alarms_job_last_run") }}</h3>
+                        <p id="alarmJobLastRun">—</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("alarms_job_next_run") }}</h3>
+                        <p id="alarmJobNextRun">—</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("alarms_job_rows") }}</h3>
+                        <p id="alarmJobRows">—</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("alarms_job_created") }}</h3>
+                        <p id="alarmJobCreated">—</p>
+                    </div>
+                </div>
+                <div class="alarms-job-actions">
+                    <button type="button" id="alarmJobRunBtn" class="file-upload-browse">{{ t("alarms_job_run_now") }}</button>
+                    <p id="alarmJobFeedback" class="mail-admin-feedback" hidden></p>
+                </div>
+
+                <div class="live-page-header">
+                    <h2 class="section-title">{{ t("alarms_page_title") }}</h2>
+                    <div class="alarms-header-actions">
+                        <label class="alarms-select-all-label">
+                            <input type="checkbox" id="alarmsSelectAll">
+                            {{ t("alarms_select_all") }}
+                        </label>
+                        <button type="button" id="alarmsAckSelectedBtn" class="file-upload-browse">{{ t("alarms_ack_selected") }}</button>
+                        <button type="button" id="alarmsAckAllBtn" class="file-upload-clear">{{ t("alarms_ack_all") }}</button>
+                        <a href="{{ url_for('live_monitor.live_monitor_page') }}" class="alarms-link-live">{{ t("alarms_goto_live") }}</a>
+                    </div>
+                </div>
+
+                <h3 class="sub-title">{{ t("live_mail_outbox_title") }}</h3>
+                <p id="alarmsMailHint" class="live-mail-hint">{{ t("live_mail_preview_note") }}</p>
+                <div id="alarmsMailOutbox" class="live-mail-outbox">
+                    <p class="live-mail-empty">{{ t("live_mail_outbox_empty") }}</p>
+                </div>
+
+                <h3 class="sub-title">{{ t("alarms_active_title") }}</h3>
+                <div id="alarmsActiveList" class="alarms-list">
+                    <p class="alarms-empty-msg">{{ t("alarms_empty") }}</p>
+                </div>
+
+                <h3 class="sub-title">{{ t("alarms_history_title") }}</h3>
+                <div id="alarmsHistoryList" class="alarms-list alarms-list-history"></div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/alarms.js') }}"></script>
+</body>
+</html>

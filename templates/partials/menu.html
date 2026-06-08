@@ -6,6 +6,31 @@
         </div>
 
         <nav class="sidebar-menu">
+            <a href="{{ url_for('live_monitor.live_monitor_page') }}"
+               class="sidebar-item {% if active_page == 'live_monitor' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("live_menu_title") }}</strong>
+                    <small>{{ t("live_menu_subtitle") }}</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('live_monitor.alarms_page') }}"
+               class="sidebar-item sidebar-item-alarms {% if active_page == 'alarms' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("alarms_menu_title") }}</strong>
+                    <small>{{ t("alarms_menu_subtitle") }}</small>
+                    <span id="sidebarAlarmBadge" class="sidebar-alarm-badge" hidden>0</span>
+                </div>
+            </a>
+
+            <a href="{{ url_for('mail_admin.mail_admin_page') }}"
+               class="sidebar-item {% if active_page == 'mail_admin' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("mail_admin_menu_title") }}</strong>
+                    <small>{{ t("mail_admin_menu_subtitle") }}</small>
+                </div>
+            </a>
+
             <a href="{{ url_for('system.system_logs') }}"
                class="sidebar-item {% if active_page == 'system' %}active-sidebar{% endif %}">
                 <div class="text">
@@ -43,6 +68,14 @@
                 <div class="text">
                     <strong>{{ t("ai_logs_menu_title") }}</strong>
                     <small>{{ t("ai_logs_menu_subtitle") }}</small>
+                </div>
+            </a>
+
+            <a href="{{ url_for('file_upload.file_upload_page') }}"
+               class="sidebar-item {% if active_page == 'file_upload' %}active-sidebar{% endif %}">
+                <div class="text">
+                    <strong>{{ t("file_upload_menu_title") }}</strong>
+                    <small>{{ t("file_upload_menu_subtitle") }}</small>
                 </div>
             </a>
         </nav>

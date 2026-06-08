@@ -136,4 +136,4 @@ function resetFilters() {
 applyFiltersBtn.addEventListener("click", applyFilters);
 resetFiltersBtn.addEventListener("click", resetFilters);
 
-renderAllCharts();
+applyFilters();

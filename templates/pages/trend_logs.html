@@ -13,6 +13,8 @@
     <main class="main-content">
         <div class="dashboard">
             <section class="section-box">
+                {% set intro_text = t('page_intro_trend') %}
+                {% include 'partials/page_intro.html' %}
                 <h2 class="section-title">{{ t("trend_page_title") }}</h2>
 
                 <div class="cards">

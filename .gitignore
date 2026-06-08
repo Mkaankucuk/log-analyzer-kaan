@@ -12,10 +12,19 @@ env/
 .vscode/settings.json
 .idea/
 
+# Secrets
+.env
+data/mail_settings.json
+data/alarms.json
+data/alarm_job_state.json
+
 # Runtime and database artifacts
 *.db
 logs.db
 sqlite3.exe
+
+# Ephemeral uploaded previews (server temp)
+tmp/
 
 # OS files
 .DS_Store

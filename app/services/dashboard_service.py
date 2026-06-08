@@ -9,9 +9,14 @@ IGNORED_PROCESS_NAMES = {
 }
 
 _PROCESS_CACHE_TTL_SECONDS = 4
+_CPU_CACHE_TTL_SECONDS = 2.5
 _process_cache = {
     "timestamp": 0.0,
     "top_processes": []
+}
+_cpu_cache = {
+    "timestamp": 0.0,
+    "usage": 0,
 }
 
 
@@ -49,6 +54,17 @@ def _collect_top_processes(limit=5):
     return sorted(process_list, key=lambda x: x["cpu"], reverse=True)[:limit]
 
 
+def _get_cpu_usage_cached():
+    now = time.time()
+    if now - _cpu_cache["timestamp"] < _CPU_CACHE_TTL_SECONDS:
+        return _cpu_cache["usage"]
+
+    usage = int(psutil.cpu_percent(interval=0.12))
+    _cpu_cache["timestamp"] = now
+    _cpu_cache["usage"] = usage
+    return usage
+
+
 def _get_top_processes_cached():
     now = time.time()
     if now - _process_cache["timestamp"] < _PROCESS_CACHE_TTL_SECONDS:
@@ -75,8 +91,7 @@ def get_dashboard_data(failed_logins, successful_logins):
         if total_login_attempts > 0 else 0
     )
 
-    # interval>0 ensures real measurement instead of stale 0 values.
-    cpu_usage = int(psutil.cpu_percent(interval=0.4))
+    cpu_usage = _get_cpu_usage_cached()
     memory_usage = int(psutil.virtual_memory().percent)
 
     cpu_class = _usage_class(cpu_usage, "cpu")

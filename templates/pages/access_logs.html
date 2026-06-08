@@ -14,6 +14,8 @@
     <main class="main-content">
         <div class="dashboard">
             <section class="section-box">
+                {% set intro_text = t('page_intro_access') %}
+                {% include 'partials/page_intro.html' %}
                 <h2 class="section-title">{{ t("access_page_title") }}</h2>
 
                 <div class="chart-box">

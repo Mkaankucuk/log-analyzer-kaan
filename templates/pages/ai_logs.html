@@ -13,17 +13,21 @@
     <main class="main-content">
         <div class="dashboard">
             <section class="section-box">
+                {% set intro_text = t('page_intro_ai') %}
+                {% include 'partials/page_intro.html' %}
                 <h2 class="section-title">{{ t("ai_logs_page_title") }}</h2>
 
                 <div class="chart-box">
                     <div class="ai-controls">
                         <div class="filter-group">
-                            <label for="aiSourceFilter">Veri Kaynağı</label>
+                            <label for="aiSourceFilter">{{ t("ai_logs_source_label") }}</label>
                             <select id="aiSourceFilter">
-                                <option value="access" selected>Access Logs</option>
-                                <option value="security">Security Logs</option>
+                                <option value="access" selected>{{ t("ai_logs_source_access") }}</option>
+                                <option value="security">{{ t("ai_logs_source_security") }}</option>
+                                <option value="file">{{ t("ai_logs_source_file") }}</option>
                             </select>
                         </div>
+                        <div class="ai-db-only-filters">
                         <div class="filter-group">
                             <label>{{ t("method") }}</label>
                             <div class="filter-inline" id="aiMethodFilter">
@@ -54,8 +58,26 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        </div>
+                        <div id="aiFileSourcePanel" class="ai-file-source-panel" hidden>
+                            <p class="ai-file-panel-title">{{ t("ai_logs_file_panel_title") }}</p>
+                            <div
+                                id="aiFileDropZone"
+                                class="ai-file-drop-zone"
+                                role="button"
+                                tabindex="0"
+                                aria-label="{{ t('ai_logs_file_drop_hint') }}"
+                            >
+                                <p class="file-drop-title">{{ t("ai_logs_file_drop_hint") }}</p>
+                                <p class="file-drop-sub">{{ t("ai_logs_file_formats_hint") }}</p>
+                                <input type="file" id="aiFileInput" class="file-upload-input-hidden" accept=".log,.txt,text/plain,*/*">
+                                <button type="button" id="aiFileBrowse" class="file-upload-browse">{{ t("ai_logs_file_browse") }}</button>
+                            </div>
+                            <p id="aiFileMeta" class="file-upload-meta"></p>
+                            <p id="aiFileTempStatus" class="file-upload-temp-status" aria-live="polite"></p>
+                        </div>
                         <div class="filter-group">
-                            <label for="aiLimit">{{ t("ai_logs_limit_label") }}</label>
+                            <label for="aiLimit"><span id="aiLimitLabel">{{ t("ai_logs_limit_label") }}</span></label>
                             <select id="aiLimit">
                                 <option value="100" selected>100</option>
                                 <option value="200">200</option>
@@ -67,7 +89,7 @@
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label>Yanıt Dili</label>
+                            <label>{{ t("ai_logs_response_lang") }}</label>
                             <div class="ai-response-mode" id="aiResponseMode">
                                 <button type="button" class="ai-mode-btn active" data-mode="tr">Türkçe</button>
                                 <button type="button" class="ai-mode-btn" data-mode="en">English</button>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("live_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                {% set intro_text = t('page_intro_live') %}
+                {% include 'partials/page_intro.html' %}
+
+                <div class="live-page-header">
+                    <h2 class="section-title">{{ t("live_page_title") }}</h2>
+                    <span id="liveConnectionBadge" class="live-connection-badge">{{ t("live_status_live") }}</span>
+                </div>
+
+                <div class="cards live-stats-cards">
+                    <div class="card">
+                        <h3>{{ t("live_stat_events") }}</h3>
+                        <p id="liveStatEvents">0</p>
+                    </div>
+                    <div class="card warning">
+                        <h3>{{ t("live_stat_anomalies") }}</h3>
+                        <p id="liveStatAnomalies">0</p>
+                    </div>
+                    <div class="card error">
+                        <h3>{{ t("live_stat_alarms") }}</h3>
+                        <p id="liveStatAlarms">0</p>
+                    </div>
+                </div>
+
+                <h3 class="sub-title">{{ t("live_mail_outbox_title") }}</h3>
+                <p id="liveMailHint" class="live-mail-hint">{{ t("live_mail_preview_note") }}</p>
+                <div id="liveMailOutbox" class="live-mail-outbox">
+                    <p class="live-mail-empty">{{ t("live_mail_outbox_empty") }}</p>
+                </div>
+
+                <div id="liveAlarmToast" class="live-alarm-toast" hidden role="alert"></div>
+
+                <div class="live-charts-grid">
+                    <div class="chart-box">
+                        <h3>{{ t("live_chart_latency_title") }}</h3>
+                        <div id="liveLatencyChart" class="live-chart"></div>
+                    </div>
+                    <div class="chart-box">
+                        <h3>{{ t("live_chart_status_title") }}</h3>
+                        <div id="liveStatusChart" class="live-chart"></div>
+                    </div>
+                    <div class="chart-box">
+                        <h3>{{ t("live_chart_method_title") }}</h3>
+                        <div id="liveMethodChart" class="live-chart"></div>
+                    </div>
+                    <div class="chart-box">
+                        <h3>{{ t("live_chart_stream_title") }}</h3>
+                        <div id="liveStreamChart" class="live-chart"></div>
+                    </div>
+                    <div class="chart-box live-chart-wide">
+                        <h3>{{ t("live_chart_throughput_title") }}</h3>
+                        <div id="liveThroughputChart" class="live-chart"></div>
+                    </div>
+                </div>
+
+                <h3 class="sub-title">{{ t("live_feed_title") }}</h3>
+                <div class="live-feed-wrap">
+                    <table class="dashboard-table live-feed-table">
+                        <thead>
+                            <tr>
+                                <th>{{ t("live_col_time") }}</th>
+                                <th>{{ t("live_col_method") }}</th>
+                                <th>{{ t("live_col_endpoint") }}</th>
+                                <th>{{ t("live_col_status") }}</th>
+                                <th>{{ t("live_col_latency") }}</th>
+                                <th>{{ t("live_col_level") }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="liveFeedBody">
+                            <tr class="live-empty-row">
+                                <td colspan="6">{{ t("live_empty") }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="live-footer-hint">
+                    <a href="{{ url_for('live_monitor.alarms_page') }}">{{ t("alarms_menu_title") }}</a>
+                </p>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/live_monitor.js') }}"></script>
+</body>
+</html>

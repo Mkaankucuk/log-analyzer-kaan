@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("file_upload_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                {% set intro_text = t('page_intro_file_upload') %}
+                {% include 'partials/page_intro.html' %}
+                <h2 class="section-title">{{ t("file_upload_page_title") }}</h2>
+
+                <div class="chart-box file-upload-chart">
+                    <div
+                        id="fileDropZone"
+                        class="file-drop-zone"
+                        role="button"
+                        tabindex="0"
+                        aria-label="{{ t('file_upload_drop_hint') }}"
+                    >
+                        <p class="file-drop-title">{{ t("file_upload_drop_hint") }}</p>
+                        <p id="fileDropHint" class="file-drop-sub">{{ t("file_upload_formats_hint") }}</p>
+                        <input type="file" id="fileUploadInput" class="file-upload-input-hidden" accept=".log,.txt,text/plain,*/*">
+                        <div class="file-upload-actions">
+                            <button type="button" id="fileUploadBrowse" class="file-upload-browse">{{ t("file_upload_browse") }}</button>
+                            <button type="button" id="fileUploadClear" class="file-upload-clear">{{ t("file_upload_clear") }}</button>
+                        </div>
+                    </div>
+                    <p id="fileUploadMeta" class="file-upload-meta"></p>
+                    <p id="fileUploadTempStatus" class="file-upload-temp-status" aria-live="polite"></p>
+                    <p id="fileUploadLineInfo" class="file-upload-line-info"></p>
+                </div>
+
+                <div class="chart-box">
+                    <h3>{{ t("file_upload_preview_title") }}</h3>
+                    <pre id="fileUploadPreview" class="file-upload-preview">{{ t("file_upload_no_preview") }}</pre>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/file_upload.js') }}"></script>
+
+</body>
+</html>

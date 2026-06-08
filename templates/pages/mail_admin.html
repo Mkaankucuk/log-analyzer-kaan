@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t("mail_admin_page_title") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="layout">
+    {% include 'partials/menu.html' %}
+
+    <main class="main-content">
+        <div class="dashboard">
+            <section class="section-box">
+                {% set intro_text = t('page_intro_mail_admin') %}
+                {% include 'partials/page_intro.html' %}
+
+                <h2 class="section-title">{{ t("mail_admin_page_title") }}</h2>
+
+                <div class="mail-admin-status cards">
+                    <div class="card">
+                        <h3>{{ t("mail_admin_smtp_status") }}</h3>
+                        <p id="mailAdminSmtpStatus">
+                            {% if mail_status.smtp_ready %}{{ t("mail_admin_smtp_ok") }}{% else %}{{ t("mail_admin_smtp_off") }}{% endif %}
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("mail_admin_cooldown_current") }}</h3>
+                        <p id="mailAdminCooldownDisplay">{{ mail_settings.cooldown_seconds }} {{ t("mail_admin_seconds") }}</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ t("mail_admin_scan_current") }}</h3>
+                        <p id="mailAdminScanDisplay">{{ mail_settings.scan_interval_seconds }} {{ t("mail_admin_seconds") }}</p>
+                    </div>
+                </div>
+
+                <form id="mailAdminForm" class="mail-admin-form">
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="mailEnabled" name="mail_enabled" {% if mail_settings.mail_enabled %}checked{% endif %}>
+                            {{ t("mail_admin_enabled") }}
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="jobEnabled" name="job_enabled" {% if mail_settings.job_enabled %}checked{% endif %}>
+                            {{ t("mail_admin_job_enabled") }}
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="scanInterval">{{ t("mail_admin_scan_label") }}</label>
+                        <select id="scanInterval" name="scan_interval_seconds">
+                            <option value="60" {% if mail_settings.scan_interval_seconds == 60 %}selected{% endif %}>1 {{ t("mail_admin_minute") }}</option>
+                            <option value="120" {% if mail_settings.scan_interval_seconds == 120 %}selected{% endif %}>2 {{ t("mail_admin_minutes") }}</option>
+                            <option value="300" {% if mail_settings.scan_interval_seconds == 300 %}selected{% endif %}>5 {{ t("mail_admin_minutes") }}</option>
+                            <option value="600" {% if mail_settings.scan_interval_seconds == 600 %}selected{% endif %}>10 {{ t("mail_admin_minutes") }}</option>
+                            <option value="900" {% if mail_settings.scan_interval_seconds == 900 %}selected{% endif %}>15 {{ t("mail_admin_minutes") }}</option>
+                            <option value="1800" {% if mail_settings.scan_interval_seconds == 1800 %}selected{% endif %}>30 {{ t("mail_admin_minutes") }}</option>
+                            <option value="3600" {% if mail_settings.scan_interval_seconds == 3600 %}selected{% endif %}>60 {{ t("mail_admin_minutes") }}</option>
+                        </select>
+                        <p class="mail-admin-hint">{{ t("mail_admin_scan_hint") }}</p>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="mailCooldown">{{ t("mail_admin_cooldown_label") }}</label>
+                        <select id="mailCooldown" name="cooldown_seconds">
+                            <option value="60" {% if mail_settings.cooldown_seconds == 60 %}selected{% endif %}>1 {{ t("mail_admin_minute") }}</option>
+                            <option value="120" {% if mail_settings.cooldown_seconds == 120 %}selected{% endif %}>2 {{ t("mail_admin_minutes") }}</option>
+                            <option value="300" {% if mail_settings.cooldown_seconds == 300 %}selected{% endif %}>5 {{ t("mail_admin_minutes") }}</option>
+                            <option value="600" {% if mail_settings.cooldown_seconds == 600 %}selected{% endif %}>10 {{ t("mail_admin_minutes") }}</option>
+                            <option value="900" {% if mail_settings.cooldown_seconds == 900 %}selected{% endif %}>15 {{ t("mail_admin_minutes") }}</option>
+                            <option value="1800" {% if mail_settings.cooldown_seconds == 1800 %}selected{% endif %}>30 {{ t("mail_admin_minutes") }}</option>
+                            <option value="3600" {% if mail_settings.cooldown_seconds == 3600 %}selected{% endif %}>60 {{ t("mail_admin_minutes") }}</option>
+                        </select>
+                        <p class="mail-admin-hint">{{ t("mail_admin_cooldown_hint") }}</p>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="mailTo">{{ t("mail_admin_recipients") }}</label>
+                        <input type="text" id="mailTo" name="mail_to" class="mail-admin-input"
+                               value="{{ mail_settings.mail_to or mail_status.recipient }}"
+                               placeholder="email@example.com">
+                    </div>
+
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="sendMajorOnly" name="send_major_only" {% if mail_settings.send_major_only %}checked{% endif %}>
+                            {{ t("mail_admin_major_only") }}
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="includeRecs" name="include_recommendations" {% if mail_settings.include_recommendations %}checked{% endif %}>
+                            {{ t("mail_admin_include_recs") }}
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="includeBuffer" name="include_buffer_stats" {% if mail_settings.include_buffer_stats %}checked{% endif %}>
+                            {{ t("mail_admin_include_buffer") }}
+                        </label>
+                    </div>
+
+                    <div class="filter-actions mail-admin-actions">
+                        <button type="submit" class="file-upload-browse">{{ t("mail_admin_save") }}</button>
+                        <button type="button" id="mailTestBtn" class="file-upload-clear">{{ t("mail_admin_test") }}</button>
+                    </div>
+                </form>
+
+                <p id="mailAdminFeedback" class="mail-admin-feedback" hidden></p>
+                <p class="mail-admin-env-note">{{ t("mail_admin_env_note") }}</p>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.i18n = {{ js_translations | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/mail_admin.js') }}"></script>
+</body>
+</html>

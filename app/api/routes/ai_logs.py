@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for
 
+from app.api.routes.file_upload import SESSION_TEMP_NAME_KEY
+from app.core.i18n import get_text
 from app.services.ai_log_service import run_ai_log_analysis
 from app.services.access_logs_service import get_access_filter_options
 
@@ -29,13 +31,24 @@ def ai_log_analysis():
         return jsonify({"ok": False, "message": "unauthorized"}), 401
 
     payload = request.get_json(silent=True) or {}
-    source = payload.get("source", "access")
-    limit = int(payload.get("limit", 100))
+    source = (payload.get("source") or "access").lower()
+    try:
+        limit = int(payload.get("limit", 100))
+    except (TypeError, ValueError):
+        limit = 100
     limit = max(100, min(limit, 3000))
     methods = payload.get("methods") or []
     endpoint = payload.get("endpoint")
     status_group = payload.get("status_group")
     response_mode = payload.get("response_mode", "tr")
+
+    file_stored_name = None
+    if source == "file":
+        file_stored_name = session.get(SESSION_TEMP_NAME_KEY)
+        if not file_stored_name:
+            return jsonify(
+                {"ok": False, "message": get_text("ai_logs_no_file_uploaded")}
+            ), 400
 
     result = run_ai_log_analysis(
         limit=limit,
@@ -43,7 +56,8 @@ def ai_log_analysis():
         endpoint=endpoint,
         status_group=status_group,
         source=source,
-        response_mode=response_mode
+        response_mode=response_mode,
+        file_stored_name=file_stored_name,
     )
     status_code = 200 if result["ok"] else 400
     return jsonify(result), status_code

@@ -1,0 +1,6 @@
+{% if intro_text %}
+<div class="page-intro-banner" data-auto-hide-ms="7500" role="status" aria-live="polite">
+    <p>{{ intro_text }}</p>
+</div>
+<script src="{{ url_for('static', filename='js/page_intro.js') }}"></script>
+{% endif %}

@@ -11,16 +11,20 @@ def access_logs():
     if "user" not in session:
         return redirect(url_for("auth.home"))
 
-    chart_data = get_chart_data()
     filter_options = get_access_filter_options()
+    empty_charts = {
+        "method_chart_data": {},
+        "request_error_chart": {"x": [], "total_requests": [], "error_count": []},
+        "latency_chart": {"x": [], "avg_latency": []},
+    }
 
     return render_template(
         "pages/access_logs.html",
         user=session["user"],
         active_page="access",
-        method_chart_data=chart_data["method_chart_data"],
-        request_error_chart=chart_data["request_error_chart"],
-        latency_chart=chart_data["latency_chart"],
+        method_chart_data=empty_charts["method_chart_data"],
+        request_error_chart=empty_charts["request_error_chart"],
+        latency_chart=empty_charts["latency_chart"],
         filter_methods=filter_options["methods"],
         filter_endpoints=filter_options["endpoints"],
         filter_status_codes=filter_options["status_codes"]
