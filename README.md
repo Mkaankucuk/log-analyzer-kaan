@@ -16,9 +16,9 @@ Dashboard uzerinden sistem, access, trend ve security loglarını görebilirsini
 - `app/api/routes/`: route ve endpointler
 - `app/services/`: is kurallari ve veri isleme
 - `app/repositories/`: veritabani sorgulari
-- `app/core/i18n.py`: ceviri sozlukleri ve dil yonetimi
-- `templates/`: sayfa sablonlari
-- `static/js/`: grafik ve frontend davranislari
+- `app/core/i18n.py`: çeviri sözlükleri ve dil yönetimi
+- `templates/`: sayfa şablonları
+- `static/js/`: grafik ve frontend davranışları
 
 
 
